@@ -73,7 +73,8 @@ class ST{
             int left = query(2*ind+1, low, mid, l, r, arr);
             int right = query(2*ind+2, mid+1, high, l, r, arr);
 
-            return seg[ind] = left+right;
+            seg[ind] = left+right;
+            return seg[ind];
         }
     }
 
@@ -106,10 +107,9 @@ class ST{
             seg[ind] += (high-low+1)*val;
             if(low!=high)
             {
-                lazy[2*ind+1] += lazy[ind];
-                lazy[2*ind+2] += lazy[ind];
+                lazy[2*ind+1] += val;
+                lazy[2*ind+2] += val;
             }
-
             return;
         }
 
@@ -130,6 +130,8 @@ void solve()
 {
     int n;
     cin>>n;
+    int q;
+    cin>>q;
 
     vector<int> arr;
     for(int i=0;i<n;i++)
@@ -138,11 +140,15 @@ void solve()
         cin>>x;
         arr.pb(x);
     }
-    int q;
-    cin>>q;
 
     ST sgt1(n);
     sgt1.build(0, 0, n-1, arr);
+
+    // for(int i=0;i<sgt1.seg.size();i++)
+    // {
+    //     cout<<sgt1.seg[i]<<" "<<sgt1.lazy[i]<<" |";
+    // }
+    // cout<<endl;
 
     while(q--)
     {
@@ -155,12 +161,18 @@ void solve()
             cin>>l>>r>>val;
 
             sgt1.update(0, 0, n-1, l-1, r-1, val, arr);
+            // for(int i=0;i<sgt1.seg.size();i++)
+            // {
+            //     cout<<sgt1.seg[i]<<" "<<sgt1.lazy[i]<<" |";
+            // }
+            // cout<<endl;
         }
         else{
-            int l , r;
-            cin>>l>>r;
+            int k;
+            cin>>k;
 
-            int ans = sgt1.query(0, 0, n-1, l-1, r-1, arr);
+            int ans = sgt1.query(0, 0, n-1, k-1, k-1, arr);
+
             cout<<"ans: ";
             cout<<ans<<endl;
         }
